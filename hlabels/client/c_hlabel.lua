@@ -37,8 +37,7 @@ function getCacheName(playerId)
 	end, playerId)
 
 	-- Gets the current player name
-	nameCache[playerId] = GetPlayerName(playerId)
-	return nameCache[playerId]
+	return 'OOC ' .. GetPlayerName(playerId)
 end
 
 RegisterFontFile("comic")
