@@ -11,14 +11,7 @@ NOTES
 
 -- Spawn ESX Process
 ESX = nil
-Citizen.CreateThread(function()
-    while not ESX do
-        TriggerEvent("esx:getSharedObject", function(library)
-            ESX = library
-        end)
-        Citizen.Wait(0)
-    end
-end)
+
 
 local comicSans = false
 local disPlayerNames = 15
@@ -32,9 +25,15 @@ function getCacheName(playerId)
 	end
 
 	-- Added request to cache the name
-	ESX.TriggerServerCallback("esx_playerlabels:requestName", function(playerName)
-		nameCache[playerId] = playerName
-	end, playerId)
+	if ESX == nil then
+		print('cannot request player name because ESX is null')
+	else
+		ESX.TriggerServerCallback("esx_playerlabels:requestName", function(playerName)
+			if playerName ~= nil then
+				nameCache[playerId] = playerName
+			end
+		end, playerId)
+	end
 
 	-- Gets the current player name
 	return 'OOC ' .. GetPlayerName(playerId)
@@ -56,6 +55,11 @@ local LocalPlayer = {
 }
 CreateThread(function()
 	while true do
+		if ESX == nil then
+			TriggerEvent("esx:getSharedObject", function(library)
+				ESX = library
+			end)
+		end
 
 		LocalPlayer.Ped.Handle = PlayerPedId()
 		Wait(500)

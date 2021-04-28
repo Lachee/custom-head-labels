@@ -36,7 +36,7 @@ ESX.RegisterServerCallback("esx_playerlabels:requestName", function(source, call
     if xPlayer then
         callback(xPlayer.getName())
     else
-        callback(GetPlayerName(playerId))
+        callback(false)
     end
 end)
 
