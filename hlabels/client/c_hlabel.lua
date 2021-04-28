@@ -30,7 +30,7 @@ function getCacheName(playerId)
 	else
 		ESX.TriggerServerCallback("esx_playerlabels:requestName", function(playerName)
 			if playerName ~= nil and playerName ~= false then
-				print('Player ' .. tostring(playerId) .. ' is actually ' .. playerName)
+				-- print('Player ' .. tostring(playerId) .. ' is actually ' .. playerName)
 				nameCache[playerId] = playerName
 			end
 		end, playerId)
