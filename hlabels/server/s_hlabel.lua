@@ -1,3 +1,8 @@
+ESX = nil
+TriggerEvent("esx:getSharedObject", function(library)
+    ESX = library
+end)
+
 -- colours that determine the success level
 colours = 
 {
@@ -24,6 +29,16 @@ distances = {
         distance = 10000
     }
 }
+
+-- This function requests the names for users
+ESX.RegisterServerCallback("esx_playerlabels:requestName", function(source, callback, playerId)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
+    if xPlayer then
+        callback(xPlayer.getName())
+    else
+        callback(GetPlayerName(playerId))
+    end
+end)
 
 RegisterCommand('hlrange', function(source, args)
     if not IsPlayerAceAllowed(source, "hlabels.hlrange") then

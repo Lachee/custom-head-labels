@@ -9,8 +9,37 @@ NOTES
 ---------------------------------------------------
 ]]
 
+-- Spawn ESX Process
+ESX = nil
+Citizen.CreateThread(function()
+    while not ESX do
+        TriggerEvent("esx:getSharedObject", function(library)
+            ESX = library
+        end)
+        Citizen.Wait(0)
+    end
+end)
+
 local comicSans = false
 local disPlayerNames = 15
+local nameCache = {}
+
+-- Gets the player name
+function getCacheName(playerId)
+	-- Cache the name
+	if nameCache[playerId] then
+		return nameCache[playerId]
+	end
+
+	-- Added request to cache the name
+	ESX.TriggerServerCallback("esx_playerlabels:requestName", function(playerName)
+		nameCache[playerId] = playerName
+	end, playerId)
+
+	-- Gets the current player name
+	nameCache[playerId] = GetPlayerName(playerId)
+	return nameCache[playerId]
+end
 
 RegisterFontFile("comic")
 fontId = RegisterFontId("Comic Sans MS")
@@ -77,7 +106,7 @@ function ManageHeadLabels()
 
 					distance = #(GetEntityCoords(LocalPlayer.Ped.Handle) - GetEntityCoords(iPed))
 					if distance < disPlayerNames then
-						DrawText3D(GetEntityCoords(iPed)["x"], GetEntityCoords(iPed)["y"], GetEntityCoords(iPed)["z"]+1, GetPlayerServerId(i) .. "  |  " .. GetPlayerName(i) .. (NetworkIsPlayerTalking(i) and "~n~~g~Talking..." or ""))
+						DrawText3D(GetEntityCoords(iPed)["x"], GetEntityCoords(iPed)["y"], GetEntityCoords(iPed)["z"]+1, GetPlayerServerId(i) .. "  |  " .. getCacheName(i) .. (NetworkIsPlayerTalking(i) and "~n~~g~Talking..." or ""))
 					end
 				end
 			end
