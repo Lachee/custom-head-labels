@@ -28,7 +28,6 @@ function getCacheName(playerId)
 	if ESX == nil then
 		print('cannot request player name because ESX is null')
 	else
-		print('triggering request')
 		ESX.TriggerServerCallback("esx_playerlabels:requestName", function(playerName)
 			if playerName ~= nil then
 				nameCache[playerId] = playerName
