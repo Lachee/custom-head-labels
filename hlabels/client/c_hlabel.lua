@@ -28,6 +28,7 @@ function getCacheName(playerId)
 	if ESX == nil then
 		print('cannot request player name because ESX is null')
 	else
+		print('triggering request')
 		ESX.TriggerServerCallback("esx_playerlabels:requestName", function(playerName)
 			if playerName ~= nil then
 				nameCache[playerId] = playerName
@@ -109,7 +110,7 @@ function ManageHeadLabels()
 
 					distance = #(GetEntityCoords(LocalPlayer.Ped.Handle) - GetEntityCoords(iPed))
 					if distance < disPlayerNames then
-						DrawText3D(GetEntityCoords(iPed)["x"], GetEntityCoords(iPed)["y"], GetEntityCoords(iPed)["z"]+1, GetPlayerServerId(i) .. "  |  " .. getCacheName(i) .. (NetworkIsPlayerTalking(i) and "~n~~g~Talking..." or ""))
+						DrawText3D(GetEntityCoords(iPed)["x"], GetEntityCoords(iPed)["y"], GetEntityCoords(iPed)["z"]+1, GetPlayerServerId(i) .. "  |  " .. getCacheName(GetPlayerServerId(i)) .. (NetworkIsPlayerTalking(i) and "~n~~g~Talking..." or ""))
 					end
 				end
 			end

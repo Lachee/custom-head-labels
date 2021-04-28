@@ -34,8 +34,10 @@ distances = {
 ESX.RegisterServerCallback("esx_playerlabels:requestName", function(source, callback, playerId)
     local xPlayer = ESX.GetPlayerFromId(playerId)
     if xPlayer then
+		print('Request for ' .. tostring(playerId) .. ' is ' .. xPlayer.getName())
         callback(xPlayer.getName())
     else
+		print('Request for ' .. tostring(playerId) .. ' is missing')
         callback(false)
     end
 end)
